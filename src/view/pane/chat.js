@@ -550,10 +550,11 @@ Candy.View.Pane = (function(self, $) {
        * Show the login form modal
        *
        * Parameters:
-       *  (String) message - optional message to display above the form
+       *  (String) messageKey - optional message to display above the form
        *  (String) presetJid - optional user jid. if set, the user will only be prompted for password.
        */
-      showLoginForm: function(message, presetJid) {
+      showLoginForm: function(messageKey, presetJid) {
+        var message = $.i18n._(messageKey);
         var domains = Candy.Core.getOptions().domains;
         var hideDomainList = Candy.Core.getOptions().hideDomainList;
         domains = domains ? domains.map( function(d) {return {'domain':d};} )
@@ -598,7 +599,7 @@ Candy.View.Pane = (function(self, $) {
             }
 
             if(jid.indexOf("@") < 0 && !Candy.Core.getUser()) {
-              Candy.View.Pane.Chat.Modal.showLoginForm($.i18n._('loginInvalid'));
+              Candy.Core.Event.Login('loginInvalid');
             } else {
               //Candy.View.Pane.Chat.Modal.hide();
               Candy.Core.connect(jid, password);
